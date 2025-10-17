@@ -46,10 +46,16 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="bg-gradient-to-r from-purple-900 to-purple-800 text-white">
-        <div className="container mx-auto px-6 py-4 flex justify-between items-center">
+      <header className="fixed top-0 left-0 right-0 z-50 text-white">
+        <div className="container mx-auto py-4 flex justify-between items-center">
           <div className="flex items-center space-x-4">
-            <Image src="/images/logo.png" alt="logo" width={109} height={40} />
+            <Image
+              src="/images/logo.png"
+              alt="logo"
+              width={109}
+              height={40}
+              className="object-contain"
+            />
             <span className="text-white text-[1.5rem] bg-black px-4 py-2 rounded-full font-normal">
               Pre-sales
             </span>
@@ -87,45 +93,79 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-purple-900 to-purple-800 text-white py-20">
-        <div className="container mx-auto px-6">
+      <section className="bg-purple-900 text-white py-20 flex items-end relative min-h-screen">
+        <Image
+          src="/images/img_main.png"
+          alt="hero-bg"
+          fill
+          className="object-cover"
+          priority
+        />
+        <div className="container absolute bottom-[165px] left-0 right-0 z-10">
           <div className="grid md:grid-cols-2 gap-12 items-end">
             <div>
               <h1 className="text-[80px] md:text-[60px] font-bold mb-6 leading-tight">
                 The First DEX Built for Ripple&apos;s XLT Ledger
               </h1>
-              <div className="w-[49rem]">
+              <div className="w-[49rem] p-[2.4rem]">
                 <div>
-                  <div>$XLT Presale LIVE! Next price increase in:</div>
+                  <div className="text-[2.4rem] text-[#E1DBE5] mb-4">
+                    $XLT Presale LIVE! <br />
+                    Next price increase in:
+                  </div>
                   <div className="flex items-center space-x-4 text-center">
                     <div>
-                      <div className="text-3xl font-mono font-bold">
+                      <div
+                        className="text-[5.6rem] font-bold"
+                        style={{
+                          fontFamily:
+                            "var(--font-manrope), Manrope, sans-serif",
+                        }}
+                      >
                         {String(timeLeft.days).padStart(2, "0")}
                       </div>
-                      <div className="text-sm text-purple-200 mt-2">Days</div>
+                      <div className="text-[2.4rem] text-white mt-2">Days</div>
                     </div>
                     <div>:</div>
                     <div>
-                      <div className="text-3xl font-mono font-bold">
+                      <div
+                        className="text-[5.6rem] font-bold"
+                        style={{
+                          fontFamily:
+                            "var(--font-manrope), Manrope, sans-serif",
+                        }}
+                      >
                         {String(timeLeft.hours).padStart(2, "0")}
                       </div>
-                      <div className="text-sm text-purple-200 mt-2">Hours</div>
+                      <div className="text-[2.4rem] text-white mt-2">Hours</div>
                     </div>
                     <div>:</div>
                     <div>
-                      <div className="text-3xl font-mono font-bold">
+                      <div
+                        className="text-[5.6rem] font-bold"
+                        style={{
+                          fontFamily:
+                            "var(--font-manrope), Manrope, sans-serif",
+                        }}
+                      >
                         {String(timeLeft.minutes).padStart(2, "0")}
                       </div>
-                      <div className="text-sm text-purple-200 mt-2">
+                      <div className="text-[2.4rem] text-white mt-2">
                         Minutes
                       </div>
                     </div>
                     <div>:</div>
                     <div>
-                      <div className="text-3xl font-mono font-bold">
+                      <div
+                        className="text-[5.6rem] font-bold"
+                        style={{
+                          fontFamily:
+                            "var(--font-manrope), Manrope, sans-serif",
+                        }}
+                      >
                         {String(timeLeft.seconds).padStart(2, "0")}
                       </div>
-                      <div className="text-sm text-purple-200 mt-2">
+                      <div className="text-[2.4rem] text-white mt-2">
                         Seconds
                       </div>
                     </div>

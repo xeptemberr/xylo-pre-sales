@@ -1,9 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Manrope } from "next/font/google";
 import "./globals.css";
 
 const pretendard = Inter({
   variable: "--font-pretendard",
+  subsets: ["latin"],
+  display: "swap",
+});
+
+const manrope = Manrope({
+  variable: "--font-manrope",
   subsets: ["latin"],
   display: "swap",
 });
@@ -30,7 +36,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${pretendard.variable} font-pretendard antialiased`}
+        className={`${pretendard.variable} ${manrope.variable} font-pretendard antialiased`}
         style={{
           fontFamily:
             'Pretendard Variable, Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif',
