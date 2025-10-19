@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import Button from "./components/Button";
-import { useState, useEffect } from "react";
 
 export default function Home() {
   const [timeLeft, setTimeLeft] = useState({
@@ -46,8 +46,8 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 text-white">
-        <div className="container mx-auto py-4 flex justify-between items-center">
+      <header className="fixed top-0 left-0 right-0 z-50 text-white backdrop-blur-md">
+        <div className="container mx-auto flex h-[84px] flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <Image
               src="/images/logo.png"
@@ -60,33 +60,30 @@ export default function Home() {
               Pre-sales
             </span>
           </div>
-          <nav className="hidden md:flex space-x-8">
+          <nav className="hidden md:flex space-x-4 font-bold">
             <a
-              href="#about"
-              className="hover:text-purple-200 transition-colors"
+              href="#features"
+              className="px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-[var(--gray-006)] hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
-              About
-            </a>
-            <a
-              href="#technology"
-              className="hover:text-purple-200 transition-colors"
-            >
-              Technology
+              Features
             </a>
             <a
               href="#tokenomics"
-              className="hover:text-purple-200 transition-colors"
+              className="px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-[var(--gray-006)] hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
               Tokenomics
             </a>
             <a
-              href="#roadmap"
-              className="hover:text-purple-200 transition-colors"
+              href="#docs"
+              className="px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-[var(--gray-006)] hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
             >
-              Roadmap
+              Docs
             </a>
-            <a href="#faq" className="hover:text-purple-200 transition-colors">
-              FAQ
+            <a
+              href="#presale"
+              className="px-6 py-3 rounded-2xl bg-[var(--primary)] backdrop-blur-md border border-purple-400/30 text-white hover:bg-[var(--primary)] transition-all duration-300 shadow-lg hover:shadow-xl font-semibold"
+            >
+              Join Presale
             </a>
           </nav>
         </div>
@@ -102,12 +99,13 @@ export default function Home() {
           priority
         />
         <div className="container absolute bottom-[165px] left-0 right-0 z-10">
-          <div className="grid md:grid-cols-2 gap-12 items-end">
+          <div className="flex justify-between items-end">
             <div>
-              <h1 className="text-[80px] md:text-[60px] font-bold mb-6 leading-tight">
-                The First DEX Built for Ripple&apos;s XLT Ledger
+              <h1 className="text-[80px] font-bold mb-6 leading-tight">
+                The First DEX Built <br />
+                for Ripple&apos;s XLT Ledger
               </h1>
-              <div className="w-[49rem] p-[2.4rem]">
+              <div className="w-[49rem] p-[2.4rem] flex flex-col gap-8">
                 <div>
                   <div className="text-[2.4rem] text-[#E1DBE5] mb-4">
                     $XLT Presale LIVE! <br />
@@ -180,15 +178,26 @@ export default function Home() {
                 </Button>
               </div>
             </div>
-            <div className="grid grid-cols-3 gap-4 mt-12 max-w-md mx-auto">
-              <div className="bg-black bg-opacity-20 rounded-lg p-4 text-center">
-                <div className="text-xl font-bold">1,000 XLT</div>
+            <div className="flex gap-4 rounded-2xl bg-black items-center justify-center h-[97px] p-8 w-[511px]">
+              <div className="p-4 text-center">
+                <div className="font-[Manrope] font-[900] text-[25px]">
+                  8,068 <br />{" "}
+                  <span className="text-[20px] font-normal">Investors</span>
+                </div>
               </div>
-              <div className="bg-black bg-opacity-20 rounded-lg p-4 text-center">
-                <div className="text-xl font-bold">1,778 XLT</div>
+              <div className="w-[1px] h-full bg-white"></div>
+              <div className="p-4 text-center">
+                <div className="font-[Manrope] font-[900] text-[25px]">
+                  5,510,025 <br />{" "}
+                  <span className="text-[20px] font-normal">Rasied</span>
+                </div>
               </div>
-              <div className="bg-black bg-opacity-20 rounded-lg p-4 text-center">
-                <div className="text-xl font-bold">2,000 XLT</div>
+              <div className="w-[1px] h-full bg-white"></div>
+              <div className="p-4 text-center">
+                <div className="font-[Manrope] font-[900] text-[25px]">
+                  $0.0932 <br />{" "}
+                  <span className="text-[20px] font-normal">Current Price</span>
+                </div>
               </div>
             </div>
           </div>
@@ -196,155 +205,227 @@ export default function Home() {
       </section>
 
       {/* Introduction Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6 text-center max-w-4xl">
-          <p className="text-xl text-gray-700 leading-relaxed">
-            Xylo Introduces a new era of DeFi with the XLT Ledger. Through
-            seamless transactions, transparent governance, and secure liquidity,
-            we connect real-world assets to the blockchain — accessible to both
-            newcomers and professionals.
+      <section className="h-[630px] bg-[url('/images/bg_introduce.png')]  bg-bottom bg-cover">
+        <div className="container flex flex-col justify-center h-full">
+          <p className="font-bold text-[var(--primary)] text-left text-[42px]">
+            Xylo Introduces a new era of DeFi with the XLT Ledger. <br />
+            <span className="text-[var(--primary-dark)] font-normal">
+              Through seamless transactions, transparent governance, and secure
+              liquidity, we connect{" "}
+            </span>
+            real-world assets to the blockchain ㅡ <br />
+            accessible to both newcomers and professionals.
           </p>
         </div>
       </section>
 
       {/* Own it Section */}
-      <section className="py-20 bg-white">
+      <section className="pt-40 pb-20 bg-white">
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold text-gray-900 mb-6">
-                Own it, or miss out.
+              <h2 className="text-[48px] font-bold mb-6">
+                Own it, <br />
+                or miss out.
               </h2>
-              <p className="text-xl text-gray-700 leading-relaxed">
-                This is something you don&apos;t want to miss out. Build wealth
-                through real-world assets.
+              <p className="text-[20px] text-[var(--gray-006)] leading-relaxed">
+                Core technology for turning real-world assets into <br /> RWA
+                tokens through an automated process.
               </p>
             </div>
-            <div className="bg-gray-200 rounded-lg h-80 flex items-center justify-center">
-              <div className="text-6xl text-gray-400">▶</div>
-            </div>
+            <button className="bg-[url('/images/img_ownit_thumb.png')] bg-cover bg-center rounded-2xl w-[658px] h-[372px] flex items-center justify-center cursor-pointer relative overflow-hidden group transition-all duration-300">
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300"></div>
+            </button>
           </div>
         </div>
       </section>
 
       {/* RWA Technology Section */}
-      <section className="py-20 bg-white">
+      <section className="pt-40 pb-20 bg-white">
         <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
+          <h2 className="text-[56px] mb-16 font-semibold text-center">
             Discover the Innovation of RWA Technology
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-gray-50 rounded-lg p-8 text-center">
-              <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                <div className="text-2xl">🔮</div>
+          <div className="flex flex-col gap-8">
+            <div className="grid grid-cols-2 gap-8 h-[400px]">
+              <div className="bg-[url('/images/bg_rwa_tech_01.png')] bg-cover bg-center rounded-2xl p-16 text-left flex flex-col justify-end">
+                <h3 className="text-[32px] font-semibold mb-4">
+                  RWA Issuance <br />
+                  Technology
+                </h3>
+                <p className="text-[20px] text-[var(--gray-006)]">
+                  Turn assets into secure digital tokens.
+                </p>
               </div>
-              <h3 className="text-xl font-bold mb-4">
-                RWA Issuance Technology
-              </h3>
-              <p className="text-gray-600">
-                Advanced technology for issuing real-world assets on blockchain
-              </p>
+              <div className="bg-[url('/images/bg_rwa_tech_02.png')] bg-cover bg-center rounded-2xl p-16 text-left flex flex-col justify-end">
+                <h3 className="text-[32px] font-semibold mb-4">
+                  XYLO Smart <br />
+                  Right Graph
+                </h3>
+                <p className="text-[20px] text-[var(--gray-006)]">
+                  On-chain rights, verified and automated.
+                </p>
+              </div>
             </div>
-            <div className="bg-gray-50 rounded-lg p-8 text-center">
-              <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                <div className="text-2xl">📋</div>
+            <div className="grid grid-cols-3 gap-8 h-[400px]">
+              <div className="bg-[url('/images/bg_rwa_tech_03.png')] bg-cover bg-center rounded-2xl p-16 text-left flex flex-col justify-start">
+                <h3 className="text-[32px] font-semibold mb-4">
+                  RWA Invest Platform
+                </h3>
+                <p className="text-[20px] text-[var(--gray-006)]">
+                  Simple access to global tokenized assets.
+                </p>
               </div>
-              <h3 className="text-xl font-bold mb-4">RWA LP Smart Contract</h3>
-              <p className="text-gray-600">
-                Intelligent liquidity pool management for RWA assets
-              </p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-8 text-center">
-              <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                <div className="text-2xl">💼</div>
+              <div className="bg-[url('/images/bg_rwa_tech_04.png')] bg-cover bg-center rounded-2xl p-16 text-left flex flex-col justify-start">
+                <h3 className="text-[32px] font-semibold mb-4">
+                  Token Economy
+                </h3>
+                <p className="text-[20px] text-[var(--gray-006)]">
+                  XLT drives fees, rewards, and governance.
+                </p>
               </div>
-              <h3 className="text-xl font-bold mb-4">RWA Invest Platform</h3>
-              <p className="text-gray-600">
-                Comprehensive investment platform for real-world assets
-              </p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-8 text-center">
-              <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                <div className="text-2xl">🪙</div>
+              <div className="bg-[url('/images/bg_rwa_tech_05.png')] bg-cover bg-center rounded-2xl p-16 text-left flex flex-col justify-start">
+                <h3 className="text-[32px] font-semibold mb-4">
+                  5-Trust Matrix
+                </h3>
+                <p className="text-[20px] text-[var(--gray-006)]">
+                  Secure, transparent, and trusted.
+                </p>
               </div>
-              <h3 className="text-xl font-bold mb-4">Token Economy</h3>
-              <p className="text-gray-600">
-                Robust token economy supporting RWA ecosystem
-              </p>
-            </div>
-            <div className="bg-gray-50 rounded-lg p-8 text-center">
-              <div className="w-20 h-20 bg-purple-100 rounded-full mx-auto mb-6 flex items-center justify-center">
-                <div className="text-2xl">🛡️</div>
-              </div>
-              <h3 className="text-xl font-bold mb-4">E-Trust Matrix</h3>
-              <p className="text-gray-600">
-                Enhanced trust and security framework for digital assets
-              </p>
             </div>
           </div>
         </div>
       </section>
 
       {/* Banner Section */}
-      <section className="py-16 bg-gradient-to-r from-purple-900 to-purple-800 text-white">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            Next generation token issuance technology, RWA on-chain technology
-          </h2>
-          <div className="flex justify-center">
-            <div className="w-32 h-32 bg-gradient-to-br from-purple-400 to-purple-600 rounded-lg flex items-center justify-center">
-              <div className="text-2xl font-bold">XLT</div>
-            </div>
+      <section className="py-40">
+        <div className="container bg-[url('/images/bg_next_generation.png')] h-[644px] bg-cover bg-center text-white">
+          <div className="container flex flex-col justify-center h-full pl-50">
+            <h2 className="text-[56px] font-semibold">
+              Next generation token <br />
+              issuance technology, <br />
+              RWA on-chain technology
+            </h2>
           </div>
         </div>
       </section>
 
       {/* Token Features Section */}
-      <section className="py-20 bg-gradient-to-r from-purple-900 to-purple-800 text-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center mb-16">
-            XLT Token Features
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="bg-black bg-opacity-20 rounded-lg p-8 text-center">
-              <div className="text-4xl mb-4">💰</div>
-              <h3 className="text-xl font-bold mb-4">Investment RWA</h3>
-              <p className="text-purple-200">
-                Invest in real-world assets through XLT tokens
-              </p>
-            </div>
-            <div className="bg-black bg-opacity-20 rounded-lg p-8 text-center">
-              <div className="text-4xl mb-4">💳</div>
-              <h3 className="text-xl font-bold mb-4">Payment in XLT Future</h3>
-              <p className="text-purple-200">
-                Use XLT for future payment solutions
-              </p>
-            </div>
-            <div className="bg-black bg-opacity-20 rounded-lg p-8 text-center">
-              <div className="text-4xl mb-4">🗳️</div>
-              <h3 className="text-xl font-bold mb-4">
-                Governance for XRG, XLT
+      <section className="py-20 h-[1080px] bg-[url('/images/bg_benefit.png')] bg-cover bg-center relative">
+        <div className="absolute -bottom-[100px] -right-[50px] z-2 float-animation">
+          <Image
+            src="/images/icon_float_02.png"
+            alt="benefit-bg"
+            width={403}
+            height={386}
+          />
+        </div>
+        <div className="container flex flex-col gap-8 justify-center h-full relative">
+          <div className="absolute -top-[50px] -left-[200px] float-animation-delayed">
+            <Image
+              src="/images/icon_float_01.png"
+              alt="benefit-bg"
+              width={403}
+              height={386}
+            />
+          </div>
+          <div className="grid grid-cols-4 gap-8 h-[350px] relative z-1">
+            <div className="bg-white rounded-2xl p-16 text-left flex flex-col justify-start gap-8">
+              <div>
+                <Image
+                  src="/images/icon_inv_01.png"
+                  alt="investment-01"
+                  width={62}
+                  height={62}
+                />
+              </div>
+              <h3 className="text-[32px] font-semibold">
+                Invest in RWA
+                <br />
+                <br />
               </h3>
-              <p className="text-purple-200">
-                Participate in governance decisions
+              <p className="text-[var(--gray-006)]">
+                XLT is required to subscribe to RWA, convert(issue) XLT to XUSD
+                and subscribe to RWA in XUSD.
               </p>
             </div>
-            <div className="bg-black bg-opacity-20 rounded-lg p-8 text-center">
-              <div className="text-4xl mb-4">⭐</div>
-              <h3 className="text-xl font-bold mb-4">
-                Utility-Issuance Rewards
+            <div className="bg-white rounded-2xl p-16 text-left flex flex-col justify-start col-span-2 gap-8">
+              <div>
+                <Image
+                  src="/images/icon_inv_02.png"
+                  alt="investment-02"
+                  width={62}
+                  height={62}
+                />
+              </div>
+              <h3 className="text-[32px] font-semibold">
+                Pay fees in XLT & Burn
+                <br />
+                <br />
               </h3>
-              <p className="text-purple-200">
-                Earn rewards through token utility
+              <p className="text-[var(--gray-006)]">
+                Flywheel: more platform activity → more XLT demand → more burn →
+                higher scarcity Value accrual from product usage to token
+                holders.
               </p>
             </div>
-            <div className="bg-black bg-opacity-20 rounded-lg p-8 text-center">
-              <div className="text-4xl mb-4">⚙️</div>
-              <h3 className="text-xl font-bold mb-4">
-                DAO Governance Participation
+            <div className="bg-white rounded-2xl p-16 text-left flex flex-col justify-start gap-8">
+              <div>
+                <Image
+                  src="/images/icon_inv_03.png"
+                  alt="investment-03"
+                  width={62}
+                  height={62}
+                />
+              </div>
+              <h3 className="text-[32px] font-semibold">
+                Partner fees for <br />
+                XRG in XLT
+                <br />
               </h3>
-              <p className="text-purple-200">
-                Active participation in DAO governance
+              <p className="text-[var(--gray-006)]">
+                Creates exogenous demand: more partners → more mandatory XLT
+                spend.Scales token utility beyond XYLO’s own marketplace.
+              </p>
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-8 h-[350px]">
+            <div className="bg-white rounded-2xl p-16 text-left flex flex-col justify-start gap-8">
+              <div>
+                <Image
+                  src="/images/icon_inv_04.png"
+                  alt="investment-04"
+                  width={62}
+                  height={62}
+                />
+              </div>
+              <h3 className="text-[32px] font-semibold">
+                Utility-focused <br />
+                Rewards
+                <br />
+                <br />
+              </h3>
+              <p className="text-[var(--gray-006)]">
+                Rewards power users without promising fixed returns. <br />{" "}
+                Performance Bonds: stake XLT as issuer collateral;
+                slashed/burned on breaches.
+              </p>
+            </div>
+            <div className="bg-white rounded-2xl p-16 text-left flex flex-col justify-start gap-8">
+              <div className="mb-4">
+                <Image
+                  src="/images/icon_inv_05.png"
+                  alt="investment-05"
+                  width={62}
+                  height={62}
+                />
+              </div>
+              <h3 className="text-[32px] font-semibold">
+                DAO Governance <br />
+                Participation
+              </h3>
+              <p className="text-[var(--gray-006)]">
+                Encourages long-term holding via lockup-weighted voting.
               </p>
             </div>
           </div>
@@ -352,56 +433,67 @@ export default function Home() {
       </section>
 
       {/* Tokenization Experience Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
+      <section className="py-80 bg-white">
+        <div className="container mb-32">
+          <h2 className="text-[56px] font-semibold text-center">
             User Experience of Tokenization
           </h2>
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <div className="text-green-600 font-bold">⚡</div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Instant Holders</h3>
-                  <p className="text-gray-600">
-                    Become a token holder instantly
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <div className="text-green-600 font-bold">🔄</div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Real-time transactions</h3>
-                  <p className="text-gray-600">
-                    Execute transactions in real-time
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <div className="text-green-600 font-bold">🏢</div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Real-world assets</h3>
-                  <p className="text-gray-600">Tokenize real-world assets</p>
-                </div>
-              </div>
-              <div className="flex items-center space-x-4">
-                <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                  <div className="text-green-600 font-bold">🆓</div>
-                </div>
-                <div>
-                  <h3 className="text-xl font-bold">Free usage</h3>
-                  <p className="text-gray-600">No fees for basic usage</p>
-                </div>
+        </div>
+        <div className="container">
+          <div className="flex justify-between">
+            <div>
+              <div>
+                <h3 className="text-[32px] font-medium mb-4">Asset Holders</h3>
+                <p className="text-[var(--gray-006)] text-[20px]">
+                  Improved tokenization technology makes it easy to <br />
+                  securitize (ABS) assets and quickly receives liquidity
+                </p>
               </div>
             </div>
-            <div className="bg-gray-200 rounded-lg h-80 flex items-center justify-center">
-              <div className="text-6xl text-gray-400">🔄</div>
+            <div>
+              <div>
+                <h3 className="text-[32px] font-medium mb-4">
+                  Retail Investors
+                </h3>
+                <p className="text-[var(--gray-006)] text-[20px]">
+                  Make valuable investments anywhere in the world <br />
+                  across borders
+                </p>
+              </div>
+            </div>
+          </div>
+          <div className="relative my-30">
+            <div className="sway-animation">
+              <Image
+                src="/images/icon_universe.png"
+                alt="tokenization-01"
+                width={1811}
+                height={481}
+              />
+            </div>
+            <div className="absolute top-[80px] left-[100px] w-[475px] h-[260px] bg-[#C9BED2] backdrop-blur-lg opacity-50 rounded-2xl rotate-[-8deg] float-animation"></div>
+            <div className="absolute top-[0px] left-[500px] w-[375px] h-[245px] bg-[#DEEFDD] backdrop-blur-lg opacity-50 rounded-2xl rotate-[9deg] float-animation-delayed-2"></div>
+            <div className="absolute top-[150px] left-[850px] w-[412px] h-[260px] bg-[#F0EFE4] backdrop-blur-lg opacity-50 rounded-2xl rotate-[-6deg] float-animation-delayed-3"></div>
+            <div className="absolute top-[0px] left-[1180px] w-[412px] h-[260px] bg-[#C9BED2] backdrop-blur-lg opacity-50 rounded-2xl rotate-[2deg] float-animation-delayed-4"></div>
+          </div>
+          <div className="container mx-auto">
+            <div className="flex justify-between">
+              <div>
+                <h3 className="text-[32px] font-medium mb-4">
+                  Institutional Investor
+                </h3>
+                <p className="text-[var(--gray-006)] text-[20px]">
+                  Secure and reliable services to carry out Stablecoins <br />
+                  and DAT strategies
+                </p>
+              </div>
+              <div>
+                <h3 className="text-[32px] font-medium mb-4">Brokerage</h3>
+                <p className="text-[var(--gray-006)] text-[20px]">
+                  Global asset managers connected, blockchain provides <br />
+                  24/7 access to investment
+                </p>
+              </div>
             </div>
           </div>
         </div>
@@ -435,7 +527,7 @@ export default function Home() {
                 </Button>
               </div>
             </div>
-            <div className="bg-white border border-gray-200 rounded-lg p-6 shadow-lg">
+            <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-lg">
               <h3 className="text-xl font-bold mb-6">
                 List of biggest transactions
               </h3>
@@ -463,7 +555,7 @@ export default function Home() {
           <h2 className="text-4xl font-bold text-gray-900 mb-8">
             Real Assets, Real Value, Tokenized for the World
           </h2>
-          <div className="bg-gray-200 rounded-lg h-80 flex items-center justify-center max-w-4xl mx-auto">
+          <div className="bg-gray-200 rounded-2xl h-80 flex items-center justify-center max-w-4xl mx-auto">
             <div className="text-6xl text-gray-400">🏭</div>
           </div>
         </div>
@@ -567,7 +659,7 @@ export default function Home() {
                   <span className="font-bold">50%</span>
                 </div>
               </div>
-              <div className="bg-gray-100 rounded-lg p-6">
+              <div className="bg-gray-100 rounded-2xl p-6">
                 <h3 className="font-bold mb-4">Market Makers 50%</h3>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
@@ -610,7 +702,7 @@ export default function Home() {
           <h2 className="text-3xl md:text-4xl font-bold mb-8">
             XRG-Powered Ecosystem, Bringing RWA to Life
           </h2>
-          <div className="bg-gray-200 rounded-lg h-60 flex items-center justify-center max-w-4xl mx-auto">
+          <div className="bg-gray-200 rounded-2xl h-60 flex items-center justify-center max-w-4xl mx-auto">
             <div className="text-6xl text-gray-400">🔗</div>
           </div>
         </div>
@@ -632,7 +724,7 @@ export default function Home() {
           </div>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="bg-gray-50 rounded-lg p-6">
+              <div key={item} className="bg-gray-50 rounded-2xl p-6">
                 <div className="w-12 h-12 bg-purple-100 rounded-full mb-4 flex items-center justify-center">
                   <div className="text-2xl">🧠</div>
                 </div>
@@ -667,7 +759,7 @@ export default function Home() {
               </p>
             </div>
             <div className="flex justify-center">
-              <div className="w-64 h-64 bg-gradient-to-br from-green-400 to-green-600 rounded-lg flex items-center justify-center">
+              <div className="w-64 h-64 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center">
                 <div className="text-6xl font-bold">XLT</div>
               </div>
             </div>
@@ -698,7 +790,7 @@ export default function Home() {
                 </div>
               ))}
             </div>
-            <div className="bg-gray-200 rounded-lg h-80 flex items-center justify-center">
+            <div className="bg-gray-200 rounded-2xl h-80 flex items-center justify-center">
               <div className="text-6xl text-gray-400">❓</div>
             </div>
           </div>
