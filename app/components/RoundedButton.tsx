@@ -2,18 +2,17 @@
 
 import React from "react";
 
-interface ButtonProps {
+interface RoundedButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   type?: "button" | "submit" | "reset";
-  variant?: "primary" | "secondary" | "outline";
+  variant?: "primary" | "secondary";
   size?: "sm" | "md" | "lg";
   className?: string;
   disabled?: boolean;
-  rounded?: "rounded-lg" | "rounded-full";
 }
 
-export default function Button({
+export default function RoundedButton({
   children,
   onClick,
   type = "button",
@@ -21,26 +20,25 @@ export default function Button({
   size = "md",
   className = "",
   disabled = false,
-}: ButtonProps) {
+}: RoundedButtonProps) {
   const baseClasses =
-    "w-full font-semibold rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer";
+    "font-medium transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer rounded-full";
 
   const variantClasses = {
-    primary: "bg-[#856285] hover:bg-[#6d4f6d] text-white focus:ring-[#856285]",
+    primary:
+      "bg-gray-200 hover:bg-gray-300 text-gray-800 focus:ring-gray-400 shadow-md hover:shadow-lg",
     secondary:
-      "bg-green-500 hover:bg-green-600 text-white focus:ring-green-500",
-    outline:
-      "border-2 border-gray-300 hover:border-gray-400 text-gray-700 hover:bg-gray-50 focus:ring-gray-300",
+      "bg-white hover:bg-gray-50 text-gray-800 focus:ring-gray-300 shadow-lg hover:shadow-xl",
   };
 
   const sizeClasses = {
-    sm: "py-2 px-4 text-sm",
-    md: "py-3 px-6 text-[2.4rem]",
-    lg: "py-4 px-8 text-lg",
+    sm: "py-2 px-6 text-sm",
+    md: "py-3 px-12 text-[20px] h-[66px]",
+    lg: "py-4 px-10 text-lg",
   };
 
   const disabledClasses = disabled
-    ? "opacity-50 cursor-not-allowed hover:bg-[#856285] hover:border-gray-300"
+    ? "opacity-50 cursor-not-allowed hover:bg-gray-200 hover:shadow-md"
     : "";
 
   return (
