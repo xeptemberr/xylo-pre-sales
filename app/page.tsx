@@ -1,17 +1,22 @@
 "use client";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Button from "./components/Button";
 import TokenomicsChart from "./components/TokenomicsChart";
+import Accordion from "./components/Accordion";
+import { faqData } from "./data/faqData";
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
+import type { Swiper as SwiperType } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { xltWalletAddresses } from "./data/walletAddresses";
+import { insightsData, InsightItem } from "./data/insightsData";
 import RoundedButton from "./components/RoundedButton";
+import BackgroundVideo from "./components/BackgroundVideo";
 
 export default function Home() {
   const [timeLeft, setTimeLeft] = useState({
@@ -20,8 +25,15 @@ export default function Home() {
     minutes: 0,
     seconds: 0,
   });
+  const [isClient, setIsClient] = useState(false);
+  const swiperRef = useRef<SwiperType | null>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const totalSlides = 3;
 
   useEffect(() => {
+    // 클라이언트 사이드임을 표시
+    setIsClient(true);
+
     // AOS 초기화
     AOS.init({
       duration: 1000,
@@ -66,7 +78,7 @@ export default function Home() {
     <div className="min-h-screen bg-white">
       {/* Header */}
       <header className="fixed top-0 left-0 right-0 z-50 text-white backdrop-blur-md">
-        <div className="container mx-auto flex h-[84px] flex justify-between items-center">
+        <div className="container flex h-[84px] flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <Image
               src="/images/logo.png"
@@ -79,22 +91,22 @@ export default function Home() {
               Pre-sales
             </span>
           </div>
-          <nav className="hidden md:flex space-x-4 font-bold">
+          <nav className="flex p-[6px] gap-2 font-bold bg-[url('/images/bg_header_nav.png')] bg-[length:100%_100%] bg-center">
             <a
               href="#features"
-              className="px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-[var(--gray-006)] hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="min-w-[68px] px-6 h-[38px] flex items-center justify-center text-[15px] font-medium text-[var(--gray-006)] bg-[url('/images/bg_header_nav_btn.png')] bg-[length:100%_100%] bg-center"
             >
               Features
             </a>
             <a
               href="#tokenomics"
-              className="px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-[var(--gray-006)] hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="min-w-[68px] px-6 h-[38px] flex items-center justify-center text-[15px] font-medium text-[var(--gray-006)] bg-[url('/images/bg_header_nav_btn.png')] bg-[length:100%_100%] bg-center"
             >
               Tokenomics
             </a>
             <a
               href="#docs"
-              className="px-6 py-3 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 text-[var(--gray-006)] hover:bg-white/20 transition-all duration-300 shadow-lg hover:shadow-xl"
+              className="min-w-[68px] px-6 h-[38px] flex items-center justify-center text-[15px] font-medium text-[var(--gray-006)] bg-[url('/images/bg_header_nav_btn.png')] bg-[length:100%_100%] bg-center"
             >
               Docs
             </a>
@@ -109,99 +121,195 @@ export default function Home() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-purple-900 text-white py-20 flex items-end relative min-h-screen">
-        <Image
-          src="/images/img_main.png"
-          alt="hero-bg"
-          fill
-          className="object-cover"
-          priority
-        />
+      <section className="text-white pt-20 flex items-end relative min-h-screen">
+        <BackgroundVideo src="/videos/video_main.mp4" />
         <div className="container absolute bottom-[165px] left-0 right-0 z-10">
           <div className="flex justify-between items-end">
             <div>
-              <h1
-                className="text-[80px] font-bold mb-6 leading-tight"
-                data-aos="fade-up"
-                data-aos-duration="500"
-              >
-                The First DEX Built <br />
-                for Ripple&apos;s XLT Ledger
+              <h1 className="text-[80px] font-bold mb-6 leading-tight">
+                <div data-aos="fade-up" data-aos-duration="500">
+                  The First DEX Built
+                </div>
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  for Ripple&apos;s XLT Ledger
+                </div>
               </h1>
               <div className="w-[49rem] p-[2.4rem] flex flex-col gap-8">
                 <div>
                   <div className="text-[2.4rem] text-[#E1DBE5] mb-4">
-                    $XLT Presale LIVE! <br />
-                    Next price increase in:
+                    <div
+                      data-aos="fade-up"
+                      data-aos-duration="500"
+                      data-aos-delay="100"
+                    >
+                      $XLT Presale LIVE!{" "}
+                    </div>
+                    <div
+                      data-aos="fade-up"
+                      data-aos-duration="500"
+                      data-aos-delay="200"
+                    >
+                      Next price increase in:
+                    </div>
                   </div>
-                  <div className="flex items-center space-x-4 text-center">
-                    <div>
-                      <div
-                        className="text-[5.6rem] font-bold"
-                        style={{
-                          fontFamily:
-                            "var(--font-manrope), Manrope, sans-serif",
-                        }}
-                      >
-                        {String(timeLeft.days).padStart(2, "0")}
-                      </div>
-                      <div className="text-[2.4rem] text-white mt-2">Days</div>
-                    </div>
-                    <div>:</div>
-                    <div>
-                      <div
-                        className="text-[5.6rem] font-bold"
-                        style={{
-                          fontFamily:
-                            "var(--font-manrope), Manrope, sans-serif",
-                        }}
-                      >
-                        {String(timeLeft.hours).padStart(2, "0")}
-                      </div>
-                      <div className="text-[2.4rem] text-white mt-2">Hours</div>
-                    </div>
-                    <div>:</div>
-                    <div>
-                      <div
-                        className="text-[5.6rem] font-bold"
-                        style={{
-                          fontFamily:
-                            "var(--font-manrope), Manrope, sans-serif",
-                        }}
-                      >
-                        {String(timeLeft.minutes).padStart(2, "0")}
-                      </div>
-                      <div className="text-[2.4rem] text-white mt-2">
-                        Minutes
-                      </div>
-                    </div>
-                    <div>:</div>
-                    <div>
-                      <div
-                        className="text-[5.6rem] font-bold"
-                        style={{
-                          fontFamily:
-                            "var(--font-manrope), Manrope, sans-serif",
-                        }}
-                      >
-                        {String(timeLeft.seconds).padStart(2, "0")}
-                      </div>
-                      <div className="text-[2.4rem] text-white mt-2">
-                        Seconds
-                      </div>
-                    </div>
+                  <div
+                    className="flex items-center space-x-4 text-center"
+                    data-aos="fade-up"
+                    data-aos-duration="500"
+                    data-aos-delay="300"
+                  >
+                    {isClient ? (
+                      <>
+                        <div>
+                          <div
+                            className="text-[5.6rem] font-bold"
+                            style={{
+                              fontFamily:
+                                "var(--font-manrope), Manrope, sans-serif",
+                            }}
+                          >
+                            {String(timeLeft.days).padStart(2, "0")}
+                          </div>
+                          <div className="text-[2.4rem] text-white mt-2">
+                            Days
+                          </div>
+                        </div>
+                        <div>:</div>
+                        <div>
+                          <div
+                            className="text-[5.6rem] font-bold"
+                            style={{
+                              fontFamily:
+                                "var(--font-manrope), Manrope, sans-serif",
+                            }}
+                          >
+                            {String(timeLeft.hours).padStart(2, "0")}
+                          </div>
+                          <div className="text-[2.4rem] text-white mt-2">
+                            Hours
+                          </div>
+                        </div>
+                        <div>:</div>
+                        <div>
+                          <div
+                            className="text-[5.6rem] font-bold"
+                            style={{
+                              fontFamily:
+                                "var(--font-manrope), Manrope, sans-serif",
+                            }}
+                          >
+                            {String(timeLeft.minutes).padStart(2, "0")}
+                          </div>
+                          <div className="text-[2.4rem] text-white mt-2">
+                            Minutes
+                          </div>
+                        </div>
+                        <div>:</div>
+                        <div>
+                          <div
+                            className="text-[5.6rem] font-bold"
+                            style={{
+                              fontFamily:
+                                "var(--font-manrope), Manrope, sans-serif",
+                            }}
+                          >
+                            {String(timeLeft.seconds).padStart(2, "0")}
+                          </div>
+                          <div className="text-[2.4rem] text-white mt-2">
+                            Seconds
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div>
+                          <div
+                            className="text-[5.6rem] font-bold"
+                            style={{
+                              fontFamily:
+                                "var(--font-manrope), Manrope, sans-serif",
+                            }}
+                          >
+                            00
+                          </div>
+                          <div className="text-[2.4rem] text-white mt-2">
+                            Days
+                          </div>
+                        </div>
+                        <div>:</div>
+                        <div>
+                          <div
+                            className="text-[5.6rem] font-bold"
+                            style={{
+                              fontFamily:
+                                "var(--font-manrope), Manrope, sans-serif",
+                            }}
+                          >
+                            00
+                          </div>
+                          <div className="text-[2.4rem] text-white mt-2">
+                            Hours
+                          </div>
+                        </div>
+                        <div>:</div>
+                        <div>
+                          <div
+                            className="text-[5.6rem] font-bold"
+                            style={{
+                              fontFamily:
+                                "var(--font-manrope), Manrope, sans-serif",
+                            }}
+                          >
+                            00
+                          </div>
+                          <div className="text-[2.4rem] text-white mt-2">
+                            Minutes
+                          </div>
+                        </div>
+                        <div>:</div>
+                        <div>
+                          <div
+                            className="text-[5.6rem] font-bold"
+                            style={{
+                              fontFamily:
+                                "var(--font-manrope), Manrope, sans-serif",
+                            }}
+                          >
+                            00
+                          </div>
+                          <div className="text-[2.4rem] text-white mt-2">
+                            Seconds
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                 </div>
-                <Button
-                  variant="primary"
-                  size="md"
-                  onClick={() => console.log("BUY $XLT clicked")}
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="400"
                 >
-                  BUY $XLT
-                </Button>
+                  <Button
+                    variant="primary"
+                    size="md"
+                    onClick={() => console.log("BUY $XLT clicked")}
+                  >
+                    BUY $XLT
+                  </Button>
+                </div>
               </div>
             </div>
-            <div className="flex gap-4 rounded-2xl bg-black items-center justify-center h-[97px] p-8 w-[511px]">
+            <div
+              className="flex gap-4 rounded-2xl bg-[url('/images/bg_status_card.png')] bg-[length:100%_100%] bg-center items-center justify-center h-[97px] p-8 w-[511px]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="500"
+            >
               <div className="p-4 text-center">
                 <div className="font-[Manrope] font-[900] text-[25px]">
                   8,068 <br />{" "}
@@ -226,43 +334,74 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* Introduction Section */}
-      <section className="h-[630px] bg-[url('/images/bg_introduce.png')]  bg-bottom bg-cover">
+      <section className="h-[630px] bg-[url('/images/bg_introduce.png')] bg-bottom bg-cover">
         <div className="container flex flex-col justify-center h-full">
-          <p
+          <div
             className="font-bold text-[var(--primary)] text-left text-[42px]"
             data-aos="fade-up"
             data-aos-duration="500"
           >
-            Xylo Introduces a new era of DeFi with the XLT Ledger. <br />
-            <span className="text-[var(--primary-dark)] font-normal">
-              Through seamless transactions, transparent governance, and secure
-              liquidity, we connect{" "}
-            </span>
-            real-world assets to the blockchain ㅡ <br />
-            accessible to both newcomers and professionals.
-          </p>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
+              Xylo Introduces a new era of DeFi with the XLT Ledger.
+            </div>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="200"
+            >
+              <span className="text-[var(--primary-dark)] font-normal">
+                Through seamless transactions, transparent governance, and
+                secure liquidity,
+              </span>
+            </div>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="300"
+            >
+              <span className="text-[var(--primary-dark)] font-normal">
+                we connect{" "}
+              </span>
+              real-world assets to the blockchain ㅡ
+            </div>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="400"
+            >
+              accessible to both newcomers and professionals.
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Own it Section */}
       <section className="pt-40 pb-20 bg-white">
-        <div className="container mx-auto px-6">
+        <div className="container mx-auto">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2
-                className="text-[48px] font-bold mb-6"
-                data-aos="fade-up"
-                data-aos-duration="500"
-              >
-                Own it, <br />
-                or miss out.
+              <h2 className="text-[48px] font-bold mb-6">
+                <div data-aos="fade-up" data-aos-duration="500">
+                  Own it,{" "}
+                </div>
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  or miss out.
+                </div>
               </h2>
               <p
                 className="text-[20px] text-[var(--gray-006)] leading-relaxed"
                 data-aos="fade-up"
-                data-aos-duration="1000"
+                data-aos-duration="500"
+                data-aos-delay="200"
               >
                 Core technology for turning real-world assets into <br /> RWA
                 tokens through an automated process.
@@ -277,7 +416,7 @@ export default function Home() {
 
       {/* RWA Technology Section */}
       <section className="pt-40 pb-20 bg-white">
-        <div className="container mx-auto px-6">
+        <div className="container">
           <h2
             className="text-[56px] mb-16 font-semibold text-center"
             data-aos="fade-up"
@@ -411,14 +550,24 @@ export default function Home() {
       <section className="py-40">
         <div className="container bg-[url('/images/bg_next_generation.png')] h-[644px] bg-cover bg-center text-white">
           <div className="container flex flex-col justify-center h-full pl-50">
-            <h2
-              className="text-[56px] font-semibold"
-              data-aos="fade-up"
-              data-aos-duration="500"
-            >
-              Next generation token <br />
-              issuance technology, <br />
-              RWA on-chain technology
+            <h2 className="text-[56px] font-semibold">
+              <div data-aos="fade-up" data-aos-duration="500">
+                Next generation token
+              </div>
+              <div
+                data-aos="fade-up"
+                data-aos-duration="500"
+                data-aos-delay="100"
+              >
+                issuance technology,
+              </div>
+              <div
+                data-aos="fade-up"
+                data-aos-duration="500"
+                data-aos-delay="200"
+              >
+                RWA on-chain technology
+              </div>
             </h2>
           </div>
         </div>
@@ -725,7 +874,7 @@ export default function Home() {
               data-aos-delay="700"
             ></div>
           </div>
-          <div className="container mx-auto">
+          <div className="container">
             <div className="flex justify-between">
               <div>
                 <h3
@@ -772,7 +921,7 @@ export default function Home() {
 
       {/* Top Transactions Section */}
       <section className="pt-0 pb-80 bg-white">
-        <div className="container mx-auto">
+        <div className="container">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <p
@@ -856,7 +1005,7 @@ export default function Home() {
                         <div>
                           {xltWalletAddresses
                             .slice(groupIndex * 4, (groupIndex + 1) * 4)
-                            .map((wallet, index) => (
+                            .map((wallet) => (
                               <div
                                 key={wallet.id}
                                 className="flex items-center space-x-4 bg-white  shadow-md rounded-2xl px-8 py-6 mx-4 mb-4 h-[80px]"
@@ -896,28 +1045,88 @@ export default function Home() {
       <section className="h-[1077px] bg-[url('/images/bg_video_banner.png')] bg-cover bg-center relative py-40">
         <div className="container text-left h-full flex flex-col justify-end">
           <h2 className="text-[56px] font-semibold text-white mb-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
-            Real Assets, <br />
-            Real Value, <br />
-            Tokenized for the World
+            <div
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
+              Real Assets,
+            </div>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="200"
+            >
+              Real Value,
+            </div>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="300"
+            >
+              Tokenized for the World
+            </div>
           </h2>
         </div>
       </section>
 
       {/* Roadmap Section */}
-      <section className="py-20 bg-white relative">
+      <section className="py-60 bg-white relative">
+        <div className="absolute top-[50%] mt-[-385px] left-[0] float-animation opacity-50">
+          <Image
+            src="/images/icon_float_03.png"
+            alt="object"
+            width={524}
+            height={771}
+          />
+        </div>
+        <div className="absolute bottom-[0] right-[0] float-animation-delayed opacity-70">
+          <Image
+            src="/images/icon_float_04.png"
+            alt="object"
+            width={641}
+            height={493}
+          />
+        </div>
         <div className="relative border-b border-[#E9E9E9]">
-          <div className="container mx-auto px-6">
-            <h2 className="text-[56px] font-semibold text-center mb-16">
+          <div className="container">
+            <h2
+              className="text-[56px] font-semibold text-center mb-16"
+              data-aos="fade-up"
+              data-aos-duration="500"
+            >
               Explore the XYLO Roadmap
             </h2>
-            <p className="text-[20px] text-[var(--gray-006)] text-center mb-32">
+            <p
+              className="text-[20px] text-[var(--gray-006)] text-center mb-32"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               Core technology for turning real-world assets into <br />
               RWA tokens through an automated process.
             </p>
             <div className="grid grid-cols-3 gap-8 relative">
-              <div className="text-center">
-                <h3 className="text-[40px] font-bold">Q4 2025</h3>
-                <div className="w-[42px] h-[42px] mx-auto relative top-[21px]">
+              <div
+                className="text-center"
+                data-aos="fade-up"
+                data-aos-duration="500"
+                data-aos-delay="100"
+              >
+                <h3
+                  className="text-[40px] font-bold"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  Q4 2025
+                </h3>
+                <div
+                  className="w-[42px] h-[42px] mx-auto relative top-[21px]"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
                   <Image
                     src="/images/icon_roadmap_circle.png"
                     alt="circle"
@@ -926,11 +1135,26 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <div className="text-center">
-                <h3 className="text-[40px] font-bold text-[#D9D9D9]">
+              <div
+                className="text-center"
+                data-aos="fade-up"
+                data-aos-duration="500"
+                data-aos-delay="100"
+              >
+                <h3
+                  className="text-[40px] font-bold text-[#D9D9D9]"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
                   Q1 2026
                 </h3>
-                <div className="w-[42px] h-[42px] mx-auto relative top-[21px]">
+                <div
+                  className="w-[42px] h-[42px] mx-auto relative top-[21px]"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
                   <Image
                     src="/images/icon_roadmap_circle.png"
                     alt="circle"
@@ -939,11 +1163,26 @@ export default function Home() {
                   />
                 </div>
               </div>
-              <div className="text-center">
-                <h3 className="text-[40px] font-bold text-[#D9D9D9]">
+              <div
+                className="text-center"
+                data-aos="fade-up"
+                data-aos-duration="500"
+                data-aos-delay="100"
+              >
+                <h3
+                  className="text-[40px] font-bold text-[#D9D9D9]"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
                   Q2 2026
                 </h3>
-                <div className="w-[42px] h-[42px] mx-auto relative top-[21px]">
+                <div
+                  className="w-[42px] h-[42px] mx-auto relative top-[21px]"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
                   <Image
                     src="/images/icon_roadmap_circle.png"
                     alt="circle"
@@ -956,20 +1195,40 @@ export default function Home() {
           </div>
         </div>
         <div className="container mt-20 relative grid grid-cols-3 gap-8 leading-12">
-          <ul className="text-left">
+          <ul
+            className="text-left"
+            data-aos="fade-up"
+            data-aos-duration="500"
+            data-aos-delay="100"
+          >
             <li className="flex items-start text-[20px] text-[var(--gray-006)]">
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Global presale growth and community outreach</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Xylo Wallet (beta, multi-chain, MPC security)</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Ambassador program scale-up</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>
                 First RWA assets onboarded <br />
@@ -978,194 +1237,509 @@ export default function Home() {
             </li>
           </ul>
           <ul className="text-left">
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Xylo Launchpad (alpha release)</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Staking, Swap, and Liquidity Pools go live</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>XLT and XUSD tokens introduced</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Mobile app beta for iOS & Android</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Initial institutional partners onboard</span>
             </li>
           </ul>
           <ul className="text-left">
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Launchpad global release</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Exchange listing preparations (XLT/XUSD)</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>New RWA classes (ESG, carbon credits)</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Stronger compliance: MiCA, SEC, KYC/AML</span>
             </li>
-            <li className="flex items-start text-[20px] text-[var(--gray-006)]">
+            <li
+              className="flex items-start text-[20px] text-[var(--gray-006)]"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="w-[10px] h-[10px] bg-[#513E5C] rounded-full mt-[10px] mr-3"></div>
               <span>Open API for fintech and exchange partners</span>
             </li>
           </ul>
         </div>
-      </section>
-
-      {/* Tokenomics Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-[56px] font-semibold text-center mb-16">
+        <div className="container pt-60 relative">
+          <h2
+            className="text-[56px] font-semibold text-center mb-16"
+            data-aos="fade-up"
+            data-aos-duration="500"
+          >
             XLT Tokenomics
           </h2>
-          <p className="text-[20px] text-[var(--gray-006)] text-center mb-32">
+          <p
+            className="text-[20px] text-[var(--gray-006)] text-center mb-32"
+            data-aos="fade-up"
+            data-aos-duration="500"
+            data-aos-delay="100"
+          >
             Discover Xylo’s presale — a transparent, borderless, <br />
             and secure way to access real-world assets.
           </p>
           {/* Tokenomics Chart */}
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="space-y-4 mb-8">
-                <div className="flex justify-between items-center">
-                  <span>Marketing</span>
-                  <span className="font-bold">0%</span>
+          <div className="grid grid-cols-3 gap-12 items-center">
+            <div className="h-full">
+              <div className="h-full flex flex-col">
+                <div
+                  className="flex justify-between items-center h-full"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <div className="flex items-center gap-8">
+                    <span className="block w-[28px] h-[28px] bg-[#f1f1f1] rounded-lg"></span>
+                    <span className="block text-[24px] font-semibold">
+                      Marketing
+                    </span>
+                  </div>
+                  <span className="block text-[28px] font-semibold">0%</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span>Reserve</span>
-                  <span className="font-bold">10%</span>
+                <div
+                  className="flex justify-between items-center h-full"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <div className="flex items-center gap-8">
+                    <span className="block w-[28px] h-[28px] bg-[#e7e7e7] rounded-lg"></span>
+                    <span className="block text-[24px] font-semibold">
+                      Reserve
+                    </span>
+                  </div>
+                  <span className="block text-[28px] font-semibold ">10%</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span>XLT Private</span>
-                  <span className="font-bold">10%</span>
+                <div
+                  className="flex justify-between items-center h-full"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <div className="flex items-center gap-8">
+                    <span className="block w-[28px] h-[28px] bg-[#B1B0BA] rounded-lg"></span>
+                    <span className="block text-[24px] font-semibold">
+                      VC &amp; Presales
+                    </span>
+                  </div>
+                  <span className="block text-[28px] font-semibold">10%</span>
                 </div>
-                <div className="flex justify-between items-center">
-                  <span>Foundation & Core</span>
-                  <span className="font-bold">10%</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span>Market Makers</span>
-                  <span className="font-bold">50%</span>
-                </div>
-              </div>
-              <div className="bg-gray-100 rounded-2xl p-6">
-                <h3 className="font-bold mb-4">Market Makers 50%</h3>
-                <div className="space-y-2 text-sm">
-                  <div className="flex justify-between">
-                    <span>Seed Round</span>
-                    <span>10%</span>
+                <div
+                  className="flex justify-between items-center h-full"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <div className="flex items-center gap-8">
+                    <span className="block w-[28px] h-[28px] bg-[#D9D9D9] rounded-lg"></span>
+                    <span className="block text-[24px] font-semibold">
+                      Foundation & Dev
+                    </span>
                   </div>
-                  <div className="flex justify-between">
-                    <span>Private Sale</span>
-                    <span>10%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Public Sale</span>
-                    <span>10%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Team</span>
-                    <span>10%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Advisors</span>
-                    <span>5%</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Liquidity</span>
-                    <span>5%</span>
-                  </div>
+                  <span className="block text-[28px] font-semibold">10%</span>
                 </div>
               </div>
             </div>
-            <div className="flex justify-center mb-16">
+            <div
+              className="flex justify-center mb-16"
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
               <div className="rounded-full shadow-soft p-8">
                 <TokenomicsChart className="drop-shadow-lg" />
               </div>
             </div>
-            <div className="bg-gray-200 rounded-full w-80 h-80 mx-auto flex items-center justify-center">
-              <div className="text-6xl text-gray-400">📊</div>
+            <div className="flex flex-col gap-8">
+              <div
+                className="flex justify-between items-center h-full"
+                data-aos="fade-up"
+                data-aos-duration="500"
+                data-aos-delay="100"
+              >
+                <div className="flex items-center gap-8">
+                  <span className="block w-[28px] h-[28px] bg-[#BEE9BB] rounded-lg"></span>
+                  <span className="block text-[24px] font-semibold">
+                    Market Supply
+                  </span>
+                </div>
+                <span className="block text-[28px] font-semibold">60%</span>
+              </div>
+              <div className="text-[20px] font-medium text-[[var(--gray-007)]] leading-16">
+                <div
+                  className="flex justify-between border-l-2 border-l-[#D9D9D9] pl-12"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <span>Initial Supply</span>
+                  <span>10%</span>
+                </div>
+                <div
+                  className="flex justify-between border-l-2 border-l-[#D9D9D9] pl-12"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <span>2nd Supply</span>
+                  <span>10%</span>
+                </div>
+                <div
+                  className="flex justify-between border-l-2 border-l-[#D9D9D9] pl-12"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <span>3rd Supply</span>
+                  <span>10%</span>
+                </div>
+                <div
+                  className="flex justify-between border-l-2 border-l-[#D9D9D9] pl-12"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <span>4th Supply</span>
+                  <span>10%</span>
+                </div>
+                <div
+                  className="flex justify-between border-l-2 border-l-[#D9D9D9] pl-12"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <span>5th Supply</span>
+                  <span>5%</span>
+                </div>
+                <div
+                  className="flex justify-between border-l-2 border-l-[#D9D9D9] pl-12"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <span>6th Supply</span>
+                  <span>5%</span>
+                </div>
+                <div
+                  className="flex justify-between border-l-2 border-l-[#D9D9D9] pl-12"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <span>7th Supply</span>
+                  <span>5%</span>
+                </div>
+                <div
+                  className="flex justify-between border-l-2 border-l-[#D9D9D9] pl-12"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <span>8th Supply</span>
+                  <span>5%</span>
+                </div>
+              </div>
             </div>
+          </div>
+          <div
+            className="text-[28px] font-semibold text-center mt-8"
+            data-aos="fade-up"
+            data-aos-duration="500"
+            data-aos-delay="100"
+          >
+            TOTAL: 10,000,000,000
+          </div>
+          <div
+            className="text-[20px] text-[[var(--gray-007)]] text-center mt-8 flex items-center justify-center gap-4"
+            data-aos="fade-up"
+            data-aos-duration="500"
+            data-aos-delay="100"
+          >
+            <span>
+              <Image
+                src="/images/icon_xylo_token.png"
+                alt="copy"
+                width={25}
+                height={24}
+                style={{ width: "auto", height: "auto" }}
+              />
+            </span>
+            <span>XLTMy69uUrDzWBa9JX1xqPMTJxXSASFcMBCLq3Y3M3n</span>
+            <button className="flex-shrink-0">
+              <Image
+                src="/images/icon_copy.png"
+                alt="copy"
+                width={24}
+                height={24}
+              />
+            </button>
           </div>
         </div>
       </section>
 
       {/* XRG Ecosystem Banner */}
-      <section className="py-16 bg-gradient-to-r from-green-600 to-green-700 text-white">
-        <div className="container mx-auto px-6 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-8">
-            XRG-Powered Ecosystem, Bringing RWA to Life
+      <section className="h-[1081px] bg-[url('/images/bg_xrg_video.png')] bg-cover bg-center relative py-40">
+        <div className="container text-left h-full flex flex-col justify-start">
+          <h2 className="text-[56px] font-semibold text-white mb-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
+            <div data-aos="fade-up" data-aos-duration="500">
+              XRG-Powered Ecosystem,
+            </div>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
+              Bringing RWA to Life
+            </div>
           </h2>
-          <div className="bg-gray-200 rounded-2xl h-60 flex items-center justify-center max-w-4xl mx-auto">
-            <div className="text-6xl text-gray-400">🔗</div>
-          </div>
         </div>
       </section>
 
       {/* Insights Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
+      <section className="py-60 bg-white">
+        <div className="container">
           <div className="flex justify-between items-center mb-16">
-            <h2 className="text-4xl font-bold text-gray-900">Insights</h2>
-            <div className="flex space-x-2">
-              <button className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
-                <span>‹</span>
+            <h2
+              className="text-[56px] font-semibold"
+              data-aos="fade-up"
+              data-aos-duration="500"
+            >
+              Insights
+            </h2>
+            <div
+              className="flex gap-8"
+              data-aos="fade-up"
+              data-aos-duration="500"
+            >
+              <button
+                className="bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => swiperRef.current?.slidePrev()}
+                disabled={currentSlide === 0}
+              >
+                <Image
+                  src="/images/icon_slide_prev.png"
+                  alt="left"
+                  width={55}
+                  height={55}
+                />
               </button>
-              <button className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 transition-colors">
-                <span>›</span>
+              <button
+                className="bg-gray-200 rounded-full flex items-center justify-center hover:bg-gray-300 cursor-pointer transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => swiperRef.current?.slideNext()}
+                disabled={currentSlide === totalSlides - 1}
+              >
+                <Image
+                  src="/images/icon_slide_next.png"
+                  alt="right"
+                  width={55}
+                  height={55}
+                />
               </button>
             </div>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[1, 2, 3, 4].map((item) => (
-              <div key={item} className="bg-gray-50 rounded-2xl p-6">
-                <div className="w-12 h-12 bg-purple-100 rounded-full mb-4 flex items-center justify-center">
-                  <div className="text-2xl">🧠</div>
+          <Swiper
+            spaceBetween={50}
+            slidesPerView={1}
+            navigation={false}
+            pagination={{ clickable: true }}
+            speed={1000}
+            className="w-full"
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            onSlideChange={(swiper) => {
+              setCurrentSlide(swiper.activeIndex);
+            }}
+          >
+            {Array.from({ length: 3 }, (_, slideIndex) => (
+              <SwiperSlide key={slideIndex}>
+                <div className="flex flex-col gap-8">
+                  {insightsData
+                    .slice(slideIndex * 4, (slideIndex + 1) * 4)
+                    .reduce<InsightItem[][]>((acc, item, index) => {
+                      if (index % 2 === 0) {
+                        acc.push([item]);
+                      } else {
+                        acc[acc.length - 1].push(item);
+                      }
+                      return acc;
+                    }, [])
+                    .map((row: InsightItem[], rowIndex: number) => (
+                      <div key={rowIndex} className="flex gap-8 h-full">
+                        {row.map((insight, itemIndex: number) => {
+                          const globalIndex =
+                            slideIndex * 4 + rowIndex * 2 + itemIndex;
+                          // 1, 4, 5, 8, 9, 12... 번째는 800px, 나머지는 600px
+                          const isWide =
+                            (globalIndex + 1) % 4 === 1 ||
+                            (globalIndex + 1) % 4 === 0;
+                          const width = isWide ? "800px" : "600px";
+
+                          return (
+                            <div
+                              key={insight.id}
+                              className="bg-gray-50 rounded-2xl p-16"
+                              style={{ width: width }}
+                              data-aos="fade-up"
+                              data-aos-duration="500"
+                              data-aos-delay="100"
+                            >
+                              <a href="#" className="block w-full h-full">
+                                <div className="flex gap-16 h-full">
+                                  {isWide && insight.image && (
+                                    <div className="flex-shrink-0">
+                                      <Image
+                                        src={insight.image}
+                                        alt={insight.title}
+                                        width={249}
+                                        height={309}
+                                      />
+                                    </div>
+                                  )}
+                                  <div className="flex flex-col justify-between h-full">
+                                    <div>
+                                      <div className="mb-4 flex items-center justify-start text-[20px] gap-4 font-medium">
+                                        <Image
+                                          src="/images/icon_coinmarketcap.png"
+                                          alt="eye"
+                                          width={32}
+                                          height={32}
+                                        />
+                                        <span>CoinMarketCap</span>
+                                      </div>
+                                      <h3 className="text-[32px] font-semibold mb-3">
+                                        {insight.title}
+                                      </h3>
+                                      <p className="text-[20px]">
+                                        {insight.description}
+                                      </p>
+                                    </div>
+                                    <div className="border-t border-[#E9E9E9] pt-12">
+                                      <div className="flex items-center justify-between mb-4 text-[20px]">
+                                        <span className="text-gray-500">
+                                          {insight.date}
+                                        </span>
+                                        <span className="text-gray-500">
+                                          {insight.readTime}
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </a>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    ))}
                 </div>
-                <h3 className="text-xl font-bold mb-3">
-                  RWA Issuance Technology
-                </h3>
-                <p className="text-gray-600 mb-4">
-                  Learn about our innovative approach to real-world asset
-                  tokenization.
-                </p>
-                <a
-                  href="#"
-                  className="text-purple-600 font-semibold hover:underline"
-                >
-                  Read more
-                </a>
-              </div>
+              </SwiperSlide>
             ))}
-          </div>
+          </Swiper>
         </div>
       </section>
 
       {/* Asset Holders Section */}
-      <section className="py-20 bg-gradient-to-r from-green-800 to-green-900 text-white">
-        <div className="container mx-auto px-6">
+      <section className="py-20 h-[646px] bg-[url('/images/bg_asset_holders.png')] bg-cover bg-center text-white relative">
+        <div className="absolute top-[-250px] left-[0] float-animation">
+          <Image
+            src="/images/icon_float_05.png"
+            alt="asset-holders"
+            width={237}
+            height={384}
+          />
+        </div>
+        <div className="container flex flex-col justify-center h-full">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
-              <h2 className="text-4xl font-bold mb-6">Asset Holders</h2>
-              <p className="text-xl text-green-200 leading-relaxed">
-                The XLT Ledger is designed to be a secure and transparent
-                platform for managing and trading assets.
-              </p>
-            </div>
-            <div className="flex justify-center">
-              <div className="w-64 h-64 bg-gradient-to-br from-green-400 to-green-600 rounded-2xl flex items-center justify-center">
-                <div className="text-6xl font-bold">XLT</div>
+              <h2
+                className="text-[56px] font-semibold mb-6"
+                data-aos="fade-up"
+                data-aos-duration="500"
+              >
+                Asset Holders
+              </h2>
+              <div className="text-[20px] text-[var(--gray-006)] font-medium leading-14">
+                <div data-aos="fade-up" data-aos-duration="500">
+                  Improved tokenization technology makes it easy to{" "}
+                </div>
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  securitize (ABS) assets and quickly receives liquidity
+                </div>
               </div>
             </div>
           </div>
@@ -1173,163 +1747,191 @@ export default function Home() {
       </section>
 
       {/* FAQ Section */}
-      <section className="py-20 bg-white">
-        <div className="container mx-auto px-6">
-          <h2 className="text-4xl font-bold text-center text-gray-900 mb-16">
-            Frequently Asked Questions
+      <section className="py-60 bg-white relative">
+        <div className="absolute top-[100px] right-[0] float-animation">
+          <Image
+            src="/images/icon_float_06.png"
+            alt="asset-holders"
+            width={507}
+            height={403}
+          />
+        </div>
+        <div className="container relative z-1">
+          <h2 className="text-[56px] font-semibold text-center mb-16">
+            <div data-aos="fade-up" data-aos-duration="500">
+              Frequently
+            </div>
+            <div
+              data-aos="fade-up"
+              data-aos-duration="500"
+              data-aos-delay="100"
+            >
+              Asked Questions
+            </div>
           </h2>
-          <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-6">
-              {[
-                "How to create an XLT wallet?",
-                "What is Xylo?",
-                "How to buy XLT tokens?",
-                "How to stake XLT tokens?",
-                "Can I trade XLT tokens?",
-              ].map((question, index) => (
-                <div key={index} className="border-b border-gray-200 pb-4">
-                  <div className="flex justify-between items-center cursor-pointer hover:text-purple-600 transition-colors">
-                    <h3 className="text-lg font-semibold">{question}</h3>
-                    <span className="text-gray-400">›</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="bg-gray-200 rounded-2xl h-80 flex items-center justify-center">
-              <div className="text-6xl text-gray-400">❓</div>
-            </div>
+          <div className="w-[1126px] mx-auto">
+            <Accordion items={faqData} />
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gradient-to-r from-green-800 to-green-900 text-white py-16">
-        <div className="container mx-auto px-6">
-          <div className="grid md:grid-cols-3 gap-12">
+      <footer className="bg-[#06040F] text-white py-40">
+        <div className="container">
+          <div className="flex justify-between gap-12">
             <div>
-              <h3 className="text-2xl font-bold mb-4">
-                Launch Your Asset, We Tokenize it.
+              <Image
+                src="/images/logo_footer.png"
+                alt="logo"
+                width={81}
+                height={26}
+                className="object-contain"
+                data-aos="fade-up"
+                data-aos-duration="500"
+              />
+              <h3 className="text-[63px] font-medium mt-32">
+                <div data-aos="fade-up" data-aos-duration="500">
+                  Launch Your Asset,{" "}
+                </div>
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  We <strong className="font-semibold">Tokenize</strong> it.
+                </div>
               </h3>
-              <p className="text-green-200 mb-6">
-                Join the future of real-world asset tokenization with XYLO.
-              </p>
-              <div className="flex space-x-4">
-                <div className="w-10 h-10 bg-green-700 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer">
-                  <span>📧</span>
+              <div className="text-[var(--gray-006)] mt-12 text-[22px] leading-14">
+                <div data-aos="fade-up" data-aos-duration="500">
+                  Follow us on social media to never miss a job opportunity,{" "}
                 </div>
-                <div className="w-10 h-10 bg-green-700 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer">
-                  <span>🐦</span>
+                <div
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  career insights, and expert hiring tips.
                 </div>
-                <div className="w-10 h-10 bg-green-700 rounded-full flex items-center justify-center hover:bg-green-600 transition-colors cursor-pointer">
-                  <span>💬</span>
-                </div>
+              </div>
+              <div className="flex space-x-4 mt-24">
+                <button
+                  className="flex items-center justify-center"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  <Image
+                    src="/images/icon_discord.png"
+                    alt="discord"
+                    width={37}
+                    height={30}
+                  />
+                </button>
+                <button
+                  className="flex items-center justify-center"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="200"
+                >
+                  <Image
+                    src="/images/icon_x.png"
+                    alt="X:twitter"
+                    width={37}
+                    height={30}
+                  />
+                </button>
+                <button
+                  className="flex items-center justify-center"
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="300"
+                >
+                  <Image
+                    src="/images/icon_telegram.png"
+                    alt="telegram"
+                    width={38}
+                    height={30}
+                  />
+                </button>
               </div>
             </div>
             <div>
-              <div className="grid grid-cols-2 gap-8">
-                <div>
-                  <h4 className="font-bold mb-4">Foundation</h4>
-                  <ul className="space-y-2 text-green-200">
-                    <li>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors"
-                      >
-                        About
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors"
-                      >
-                        Team
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors"
-                      >
-                        Mission
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-bold mb-4">Partners</h4>
-                  <ul className="space-y-2 text-green-200">
-                    <li>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors"
-                      >
-                        Partnerships
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors"
-                      >
-                        Integrations
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-bold mb-4">About</h4>
-                  <ul className="space-y-2 text-green-200">
-                    <li>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors"
-                      >
-                        Press
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors"
-                      >
-                        Careers
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-                <div>
-                  <h4 className="font-bold mb-4">Legal</h4>
-                  <ul className="space-y-2 text-green-200">
-                    <li>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors"
-                      >
-                        Terms
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="hover:text-white transition-colors"
-                      >
-                        Privacy
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-            <div className="flex flex-col justify-center">
-              <h4 className="text-xl font-bold mb-4">Explore XYLO</h4>
-              <button className="flex items-center space-x-2 text-green-200 hover:text-white transition-colors">
-                <span>Get Started</span>
-                <span>→</span>
-              </button>
+              <ul className="grid grid-cols-2 gap-8 font-medium text-[var(--gray-006)] text-[20px]">
+                <li data-aos="fade-up" data-aos-duration="500">
+                  Navigation
+                </li>
+                <li data-aos="fade-up" data-aos-duration="500">
+                  Building A1, <br />
+                  Dubai Digital Park, <br />
+                  Dubai Silicon Oasis Dubai, <br />
+                  U.A.E
+                </li>
+                <li
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  Home
+                </li>
+                <li
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="100"
+                >
+                  +84 965 657 893
+                </li>
+                <li
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="200"
+                >
+                  Features
+                </li>
+                <li
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="200"
+                >
+                  info@xylo.world
+                </li>
+                <li
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="300"
+                >
+                  Tokenomics
+                </li>
+                <li
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="300"
+                >
+                  Docs
+                </li>
+                <li
+                  data-aos="fade-up"
+                  data-aos-duration="500"
+                  data-aos-delay="300"
+                >
+                  Join Presale
+                </li>
+              </ul>
+              <h4
+                className="mt-24 text-[63px] font-light shimmer-text leading-tight"
+                data-aos="fade-up"
+                data-aos-duration="500"
+                data-aos-delay="400"
+              >
+                Explore XYLO →
+              </h4>
             </div>
           </div>
-          <div className="border-t border-green-700 mt-12 pt-8 text-center text-green-200">
+          <div
+            className="mt-12 text-center text-[var(--gray-006)] text-[15px]"
+            data-aos="fade-up"
+            data-aos-duration="500"
+            data-aos-delay="500"
+          >
             <p>&copy; 2024 XYLO. All rights reserved.</p>
           </div>
         </div>
