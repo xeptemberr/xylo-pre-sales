@@ -17,6 +17,7 @@ import { xltWalletAddresses } from "./data/walletAddresses";
 import { insightsData, InsightItem } from "./data/insightsData";
 import RoundedButton from "./components/RoundedButton";
 import BackgroundVideo from "./components/BackgroundVideo";
+import ReactVideo from "react-player";
 
 export default function Home() {
   const [timeLeft, setTimeLeft] = useState({
@@ -77,7 +78,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-50 text-white backdrop-blur-md">
+      <header className="absolute top-0 left-0 right-0 z-50 text-white backdrop-blur-md">
         <div className="container flex h-[84px] flex justify-between items-center">
           <div className="flex items-center space-x-4">
             <Image
@@ -133,7 +134,7 @@ export default function Home() {
                 <div
                   data-aos="fade-up"
                   data-aos-duration="500"
-                  data-aos-delay="100"
+                  data-aos-delay="200"
                 >
                   for Ripple&apos;s XLT Ledger
                 </div>
@@ -144,14 +145,14 @@ export default function Home() {
                     <div
                       data-aos="fade-up"
                       data-aos-duration="500"
-                      data-aos-delay="100"
+                      data-aos-delay="300"
                     >
                       $XLT Presale LIVE!{" "}
                     </div>
                     <div
                       data-aos="fade-up"
                       data-aos-duration="500"
-                      data-aos-delay="200"
+                      data-aos-delay="400"
                     >
                       Next price increase in:
                     </div>
@@ -160,7 +161,7 @@ export default function Home() {
                     className="flex items-center space-x-4 text-center"
                     data-aos="fade-up"
                     data-aos-duration="500"
-                    data-aos-delay="300"
+                    data-aos-delay="500"
                   >
                     {isClient ? (
                       <>
@@ -292,7 +293,7 @@ export default function Home() {
                 <div
                   data-aos="fade-up"
                   data-aos-duration="500"
-                  data-aos-delay="400"
+                  data-aos-delay="600"
                 >
                   <Button
                     variant="primary"
@@ -308,7 +309,7 @@ export default function Home() {
               className="flex gap-4 rounded-2xl bg-[url('/images/bg_status_card.png')] bg-[length:100%_100%] bg-center items-center justify-center h-[97px] p-8 w-[511px]"
               data-aos="fade-up"
               data-aos-duration="500"
-              data-aos-delay="500"
+              data-aos-delay="700"
             >
               <div className="p-4 text-center">
                 <div className="font-[Manrope] font-[900] text-[25px]">
@@ -548,7 +549,22 @@ export default function Home() {
 
       {/* Banner Section */}
       <section className="py-40">
-        <div className="container bg-[url('/images/bg_next_generation.png')] h-[644px] bg-cover bg-center text-white">
+        <div className="container aspect-video bg-cover bg-center text-white relative">
+          <div className="overflow-hidden rounded-2xl h-full absolute inset-0">
+            <div className="w-full h-full absolute left-0 top-0 z-1"></div>
+            <ReactVideo
+              src="https://www.youtube.com/embed/elBGr09wf8s?autoplay=1&mute=1&loop=1&playlist=elBGr09wf8s"
+              width="100%"
+              height="100%"
+              playing
+              autoPlay={true}
+              light={false}
+              controls={false}
+              muted={true}
+              loop={true}
+              className="w-full h-full object-cover"
+            />
+          </div>
           <div className="container flex flex-col justify-center h-full pl-50">
             <h2 className="text-[56px] font-semibold">
               <div data-aos="fade-up" data-aos-duration="500">
