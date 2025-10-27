@@ -551,19 +551,7 @@ export default function Home() {
       <section className="py-40">
         <div className="container aspect-video bg-cover bg-center text-white relative">
           <div className="overflow-hidden rounded-2xl h-full absolute inset-0">
-            <div className="w-full h-full absolute left-0 top-0 z-1"></div>
-            <ReactVideo
-              src="https://www.youtube.com/embed/elBGr09wf8s?autoplay=1&mute=1&loop=1&playlist=elBGr09wf8s"
-              width="100%"
-              height="100%"
-              playing
-              autoPlay={true}
-              light={false}
-              controls={false}
-              muted={true}
-              loop={true}
-              className="w-full h-full object-cover"
-            />
+            <BackgroundVideo src="/videos/video_01.mp4" />
           </div>
           <div className="container flex flex-col justify-center h-full pl-50">
             <h2 className="text-[56px] font-semibold">
@@ -1058,7 +1046,8 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <section className="h-[1077px] bg-[url('/images/bg_video_banner.png')] bg-cover bg-center relative py-40">
+      <section className="h-[1077px] relative py-40">
+        <BackgroundVideo src="/videos/video_02.mp4" />
         <div className="container text-left h-full flex flex-col justify-end">
           <h2 className="text-[56px] font-semibold text-white mb-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
             <div
@@ -1564,7 +1553,8 @@ export default function Home() {
       </section>
 
       {/* XRG Ecosystem Banner */}
-      <section className="h-[1081px] bg-[url('/images/bg_xrg_video.png')] bg-cover bg-center relative py-40">
+      <section className="h-[1081px] relative py-40">
+        <BackgroundVideo src="/videos/video_03.mp4" />
         <div className="container text-left h-full flex flex-col justify-start">
           <h2 className="text-[56px] font-semibold text-white mb-8 drop-shadow-[0_4px_8px_rgba(0,0,0,0.5)]">
             <div data-aos="fade-up" data-aos-duration="500">
